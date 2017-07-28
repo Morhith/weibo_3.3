@@ -29,6 +29,13 @@ class baseControl{
 		$this->smarty->assign($name,$value);
 	}
 
+	public function reJson($status,$redata=array()){
+		echo json_encode(array(
+				'status'=> $status,
+				'rearray'=> $redata
+			));
+	}
+
 	// 入口文件调用
 	public function run()
 	{

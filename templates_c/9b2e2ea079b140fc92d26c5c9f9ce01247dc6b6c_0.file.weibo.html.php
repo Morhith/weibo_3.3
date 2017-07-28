@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-07-26 09:09:45
+/* Smarty version 3.1.30, created on 2017-07-27 02:56:43
   from "D:\wamp64\www\yehith\weibo_3.3\view\weibo.html" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_59785c59b00530_24112225',
+  'unifunc' => 'content_5979566b166b29_55601441',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '9b2e2ea079b140fc92d26c5c9f9ce01247dc6b6c' => 
     array (
       0 => 'D:\\wamp64\\www\\yehith\\weibo_3.3\\view\\weibo.html',
-      1 => 1501060175,
+      1 => 1501124201,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_59785c59b00530_24112225 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5979566b166b29_55601441 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -143,7 +143,12 @@ function content_59785c59b00530_24112225 (Smarty_Internal_Template $_smarty_tpl)
 			<!-- 右边盒子 -->
 			<div class="col-lg-8" style="border:1px solid #000;">
 				<!-- 上面显示已经发布的微博内容 -->
-				<div>
+				<?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['weibo_list']->value, 'value', false, 'key');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['key']->value => $_smarty_tpl->tpl_vars['value']->value) {
+?>
+					<div>
 					<div class="col-lg-2">
 						<img src="" alt="">
 					</div>
@@ -152,9 +157,10 @@ function content_59785c59b00530_24112225 (Smarty_Internal_Template $_smarty_tpl)
 						<div class="sanjiao_box"></div>
 
 						<div class="list_content">
-							<h4>其实我是可爱的标题</h4>
+							<h4></h4>
 							<div>
-								正文
+								<?php echo $_smarty_tpl->tpl_vars['value']->value['content'];?>
+
 							</div>
 							<div>
 								<!-- 四个按钮 -->
@@ -179,10 +185,16 @@ function content_59785c59b00530_24112225 (Smarty_Internal_Template $_smarty_tpl)
 							<ul class="commont_list">
 								<li>我是评论1</li>
 							</ul>
+						</div>
 					</div>
-				</div>
 				<!-- 下面发布和显示最新内容 -->
 				<div>
+				<?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
 					<!-- 左边是发布 -->
 					<div class="col-lg-8">
 						<!-- 发布界面 -->

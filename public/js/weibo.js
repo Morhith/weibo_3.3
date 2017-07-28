@@ -1,112 +1,46 @@
 $(function  (){
+	var screenX = document.body.clientWidth;
+	var Multiple = screenX/1640;//1600/20
+	if(screenX<=1366){
+		document.documentElement.style.fontSize = 20*Multiple+"px";
+	}else{
+		document.documentElement.style.fontSize = "20px";
+	}
 
-
-	var $send_btn = $('.send_content');
-	$send_btn.click(function(){
-		send_content();
-	});
-	function send_content(){
-
-
-
-		var $content = $(".weibo_textarea");
-		var $file = $('.select_file');
-		var $title = $('.title_input').val();
-		var $list = $('.content_box');
-		// var dateStr = create_time();
-		文字发送
-		
+	//登录
+	$("#weibo_login_btn").click(function(event) {
+		/* Act on the event */
+		$user_name = $('#userName');
+		$user_pwd = $('#userPassword');
 		$.ajax({
-			url:"index.php?control=weibo&action=send_content",
-			type:"post",//为false则传给后台的不是对象	
-	        data:{'content':$content.eq(0).val()},
+			url:"index.php?control=user&action=issetUser",
+			type:"post",	
+	        data:{'user_name':$user_name.val(),'user_password':$user_pwd.val()},
 			success: function(data){
-				if($.isEmptyObject(data)){
+				if(!$.isEmptyObject(data)){	
 					var redata = $.parseJSON(data);
+					if(1==redata.status){
+						localStorage.setItem("user_id",redata.rearray[0].user_id);
+						localStorage.setItem("user_name",redata.rearray[0].user_name);
+						localStorage.setItem("user_pic",redata.rearray[0].user_pic);
+						$('.login').html(redata.rearray[0].user_name);
+						$('.closeOut').stop().show(500);
+						$('.weibo_body_name>h3').html(redata.rearray[0].user_name);
+						$('.head_photo>img').attr('src',redata.rearray[0].user_pic);
+						$('#login_modal').modal('hide');
+						$('.reg').html('欢迎你回来');
+					}
+					else{
+						console.log('登录失败')
+					}
 				}
 			}
-		});
-		// 
-		
-	}
-	function save_file(formdata,obj){
-	$.ajax({
-		url:"index.php?control=weibo&action=send_content",
-		type:"post",
-        contentType:false,
-        processData:false,//为false则传给后台的不是对象	
-        data:formdata,
-		success: function(data){
-			 	var redata = $.parseJSON(data);
-			 	var c_obj = obj;
-			 	c_obj.rt_url = redata.info;
-			 	c_obj.rt_upic = localStorage.getItem("user_pic");
-			 	c_obj.rt_uid = localStorage.getItem("uid");
-			 	c_obj.rt_id = redata.content_id;
-			 	if(redata.music_name){
-			 		c_obj.rt_name=redata.music_name;
-			 	}
-					var str = create_li_content(c_obj);
-					c_obj.list.prepend($(str));
-				}
-			});
-	}
-
-
-	var $btn = $('#test_btn');
-	$btn.click(function(){
-		var $register = $("#register_box");
-		var user_name = $register.find('#user_name_register');
-		var user_pwd = $register.find('#userPassword_register');
-		var user_repwd = $register.find('#userRePassword_register');
-
-		$register.find('.register_btn').click(function(){
-			$.ajax({
-			url:"index.php?control=user&action=register",
-			type:"post",//为false则传给后台的不是对象	
-	        data:{'user_name':user_name.val(),'user_password':user_pwd.val()},
-			success: function(data){
-				if($.isEmptyObject(data)){
-					var redata = $.parseJSON(data);
-				}
-			}
-			});
-
 		});
 	});
-
-
-	// $(".register_btn").click(function(){
-	// 	var $uaerName = $("#userName").val();
-	// 	var $passWord = $("#passWord").val();
-	// 	var $rePassWord = $("#rePassWord").val();
-	// 	if(''!=$uaerName){
-	// 		if(isset(userName)){
-	// 			if($passWord!=$rePassWord){
-	// 				$.ajax({
-	// 					url:'index.php',
-	// 					type:'post',
-	// 					data:{
-	// 					 	'user_name':$uaerName,
-	// 					 	'user_name':$passWord,
-	// 				 	},
-	// 					async : false,
-	// 					success: function(data){
-	// 						// var rtdata = $.parseJSON(data);
-	// 					}
-	// 				});
-	// 				}
-	// 				else{			
-	// 					alert("密码不一致");
-	// 				}
-	// 		}else{
-	// 			alert("用户名已存在！");
-	// 		}
-	// 	}else{
-	// 		alert("用户名不能为空！");
-	// 	}
-	// });
-	function isset(userName){
+	//注册
+	
+	// 匹配用户名
+	function issetUser(userName){
 		var val = false;
 		$.ajax({
 			url:'index.php?',
@@ -135,6 +69,41 @@ $(function  (){
 		});
 		return val;
 	}
-	// 
+	// 退出事件
+	$('.closeOut').click(function(event) {
+		/* Act on the event */
+		logout();
+	});
+	function logout(){
+		localStorage.removeItem("user_id");
+	 	localStorage.removeItem("user_name");
+	 	localStorage.removeItem("user_pic");
+	 	$.post('index.php?control=user&action=logout',{},function(data){
+	 		if(!$.isEmptyObject(data)){
+	 			var redata = $.parseJSON(data);
+					if(1==redata.status){
+						$('.weibo_body_name h3').html('游客，你好');
+						$('.closeOut').stop().hide(500);
+						$('.head_photo>img').attr('src',"staticImages/00000.jpg");
+						$('.login').html('<a href="#login_modal" id="login_btn" data-toggle="modal">登录</a>');
+	 					$('.reg').html('<a href="#register" id="register_btn" data-toggle="modal">注册</a>');
+					}else{
+						console.log('退出失败')
+					}
+	 		}
+	 	});
+	}
+
+	//发表微博
+	var $weibo_btn_a = $('.weibo_btn_a');
+	$weibo_btn_a.each(function(index, el) {
+		var val = index;
+		var that = this;
+		$weibo_btn_a.eq(index).on('click',function(){
+			ev_index = val;
+			$weibo_btn_a.eq(index).siblings().removeClass('text_red');
+			$weibo_btn_a.eq(index).addClass('text_red');
+		});
+	});
 	
 });

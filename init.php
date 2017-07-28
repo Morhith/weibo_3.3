@@ -5,6 +5,7 @@
 require_once 'core\library/smarty/Smarty.class.php';
 
 
+require_once 'core\common.php';
 
 
 // 引入pdo

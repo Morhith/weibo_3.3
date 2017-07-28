@@ -119,7 +119,8 @@
 			<!-- 右边盒子 -->
 			<div class="col-lg-8" style="border:1px solid #000;">
 				<!-- 上面显示已经发布的微博内容 -->
-				<div>
+				{foreach $weibo_list as $key=>$value}
+					<div>
 					<div class="col-lg-2">
 						<img src="" alt="">
 					</div>
@@ -128,9 +129,9 @@
 						<div class="sanjiao_box"></div>
 
 						<div class="list_content">
-							<h4>其实我是可爱的标题</h4>
+							<h4></h4>
 							<div>
-								正文
+								{$value.content}
 							</div>
 							<div>
 								<!-- 四个按钮 -->
@@ -155,10 +156,11 @@
 							<ul class="commont_list">
 								<li>我是评论1</li>
 							</ul>
+						</div>
 					</div>
-				</div>
 				<!-- 下面发布和显示最新内容 -->
 				<div>
+				{/foreach}
 					<!-- 左边是发布 -->
 					<div class="col-lg-8">
 						<!-- 发布界面 -->

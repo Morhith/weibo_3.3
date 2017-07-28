@@ -1,0 +1,404 @@
+html,body {
+	margin: 0;
+	padding: 0;
+	font-family: '宋体';
+	font-size: 20px;
+	color: #fff;
+}
+body{
+	background: url("../staticImages/body_bg.png") no-repeat;
+	background-size: 100%;
+}
+a{
+	text-decoration: none;
+}
+li{
+	list-style: none;
+}
+img{
+	width: 100%;
+}
+ul{
+	padding: 0;
+}
+/*工具箱*/
+.po-fixed {
+	position: fixed;
+	top: 0;
+}
+
+.float-left {
+	float: left;
+}
+.width{
+	width: 100%;
+}
+
+/*导航条*/
+.nav_top {
+	width: 100%;
+	z-index: 2;
+	/*background:#000;*/
+}
+.nav_top .head_photo {
+	width: 3.2rem;
+	height: 3.2rem;
+	background: #aaa;
+	border-radius: 50%;
+	margin: 0 1rem;
+	background-size: 100%;
+	background: url("../staticImages/00000.jpg");
+	background-size: 100%;
+}
+.nav_top .nav_text {
+	font-size: 1rem;
+	color: #fff;
+	padding: 1.7rem 1rem;
+	cursor: pointer;
+}
+.nav_top .login,.reg {
+	font-size: 0.8rem;
+	padding: 1rem 0.3rem;
+	color: #fff;
+}
+.nav_top .login {
+	margin-left: 13rem;
+}
+.nav_top .closeOut {
+	background: #8a1919;
+	cursor: pointer;
+	margin:1.8rem 0 0 1rem; 
+	width: 1.4rem; 
+	height: 1.4rem; 
+	text-align: center; 
+	line-height: 1.6rem; 
+	font-size: 1.2rem; 
+	border-radius: 50%;
+}
+.display_none{
+	display: none;
+}
+/*导航条 end*/
+
+/*视频*/
+.video {
+	width: 100%;
+	overflow: hidden;
+}
+.video .video_bg {
+	position: relative;
+	left: 50%;
+	margin-left: -80rem;
+}
+
+/*微博内容*/
+.container_body{
+	margin-top: 5rem;
+	margin-bottom: 1rem;
+}
+.weibo_dangan{
+	background: rgba(0,0,0, .8);
+}
+.weibo_left_title{
+	padding: 0.2rem 0.2rem 0.2rem 0.75rem;
+}
+.head_photo{
+	width: 3rem;
+	height: 3rem;
+	float: left;
+	margin: 0.4rem 0 0 0.3rem;
+}
+.head_photo img{
+	width: 100%;
+}
+.weibo_left_body{
+	background: #171a1f;
+	position: relative;
+}
+
+/*头像信息*/
+.weibo_body_info{
+	margin-top: 1rem;
+	background: rgba(0,0,0, .3);
+	overflow: hidden;
+}
+.weibo_body_name{
+	float: left;
+	margin: -0.3rem 0 0 0.75rem;
+}
+.weibo_body_name h2{
+	margin-bottom: 0px;
+	margin-top: 0.5rem;
+}
+.weibo_body_name span{
+	font-size: 12px;
+	margin-top: 0.3rem;
+	display: block;
+	color: #6e8c6a;
+}
+.weibo_grade{
+	width: 4.5rem;
+    height: 4.5rem;
+    position: absolute;
+    top: 8px;
+    right: 15px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+.weibo_grade img{
+	width: 100%;
+	margin: auto;
+}
+/*头像信息 end*/
+
+/*选择显示的三张图片*/
+.weibo_body_show{
+	margin-top: 1.5rem;
+	overflow: hidden;
+}
+.weibo_body_show>div{
+	height: 4.5rem;
+	width: 4.5rem;
+}
+.weibo_body_show>div img{
+	width: 100%;
+	/*margin: auto;*/
+	height: 100%;
+}
+.weibo_show1,.weibo_show2,.weibo_show3{
+	float: left;
+	margin-right: 0.7rem;
+}
+.weibo_show3{
+	margin-right: 0;
+}
+/*选择显示的三张图片 end*/
+
+/*点赞最多的微博*/
+.weibo_show_morezan{
+	margin-top: 1.2rem;
+}
+.weibo_show_ul{
+	color: #000;
+}
+.weibo_show_li{
+	background: #fff;
+}
+.weibo_show_li .weibo_show_zan{
+	padding: 1rem;
+}
+.weibo_show_li .weibo_show_zan h3{
+	margin-top: 0;
+	/*overflow: hidden;*/
+}
+.weibo_show_li .weibo_zan_img{
+	width: 14.4rem;
+	height: 14.4rem;
+	vertical-align: middle;
+    display: table-cell;
+    /*overflow: hidden;*/
+    /*用js控制，如果图片长度超过14.4rem,display:none,overflow:hidden;*/
+}
+.weibo_show_li .weibo_zan_img img{
+	width: 100%;
+}
+.weibo_show_li .weibo_zan_button{
+	border-top: 1px solid #000;
+	overflow: hidden;
+	margin-top: 1rem;
+}
+.weibo_show_li .weibo_zan_button ul{
+	width: 100%;
+}
+.weibo_show_li .weibo_zan_button li{
+	float: left;
+	/*margin-left: 0.9rem;*/
+	width: 25%;
+	text-align: center;
+	padding: 0.2rem;
+}
+.weibo_shwo_comment{
+	padding:0 1rem 1rem 1rem;
+}
+.weibo_shwo_comment li{
+	border-bottom: 1px dashed #000;
+	margin-bottom: 0.5rem;
+}
+.weibo_shwo_comment li:last-child{
+	border:none;
+}
+.weibo_comment_header{
+	width: 2rem;
+	height: 2rem;
+	float: left;
+	overflow: hidden;
+}
+.weibo_comment_header img{
+	width: 100%;
+}
+.weibo_comment_text p{
+	padding: 0 0 0.5rem 2.5rem;
+	font-size: 0.8rem;
+}
+.weibo_shwo_commentRelease{
+	padding: 0 1rem 0 1rem;
+	margin-bottom: 0.5rem;
+}
+.weibo_shwo_commentRelease .commont_texarea{
+	width: 90% !important;
+	resize: none;
+	display: block;
+	margin: 0 auto;
+}
+.weibo_shwo_commentRelease .send_commont{
+	margin-top: 0.5rem;
+	margin-left: 22.2rem;
+}
+
+/*点赞最多的微博 end*/
+
+/*展示微博盒子*/
+.weibo_right_showAll{
+	width: 100%;
+	height: 22.25rem;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	margin-top: 1rem;
+}
+.weibo_right_showAll::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(98,98,98,0);
+	background-color: rgba(100,100,100,0);
+}
+.weibo_right_showAll::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: rgba(0,0,0,0);
+}
+.weibo_right_showAll::-webkit-scrollbar-thumb
+{
+	background-color: rgba(0,0,0,0.6);
+	border-radius:6px;
+}
+/*展示微博盒子 end*/
+
+/*用户头像*/
+.user_head{
+	width: 4.3rem;
+	height: 4.3rem;
+	overflow: hidden;
+	border-radius: 50%;
+	padding: 0;
+}
+.user_head img{
+	width: 100%;
+	margin: auto;
+}
+/*用户头像 end*/
+
+/*发布盒子*/
+.weibo_right_release{
+	height: 15.2rem;
+}
+.weibo_release{
+	height: 90%;
+	margin-top: 1rem;
+}
+.weibo_release_main{
+	margin-top: -0.5rem;
+}
+.weibo_release_main textarea{
+	height: 8rem;
+	width: 14.8rem;
+	resize: none;
+	margin-top: 0.5rem;
+}
+.weibo_main_btn{
+	margin-top: 0.5rem;
+	margin-right: -0.4rem;
+}
+.weibo_release_title h5{
+	background: #000;
+	padding: 1rem;
+	margin-top: 0;
+}
+.weibo_release_bgColor{
+	overflow:hidden;
+	background: rgba(0,0,0,0.6);
+	border:1px solid #000;
+}
+.weibo_release_type{
+	margin-top: -0.5rem;
+	height: 11.2rem;
+	border-left:3px solid #000;
+	text-align: center;
+}
+.weibo_release_type ul{
+	height: 100%;
+}
+.weibo_release_type li {
+	height: 20%;
+}
+/*发布盒子 end*/
+
+/*最新内容*/
+.weibo_new{
+	margin-top: 1rem;
+	text-align: center;
+	background: rgba(0,0,0,0.6);
+	overflow: hidden;
+	height: 14rem;
+	overflow-y: scroll;
+}
+.weibo_new::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(98,98,98,0);
+	background-color: rgba(100,100,100,0);
+}
+.weibo_new::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: rgba(0,0,0,0);
+}
+.weibo_new::-webkit-scrollbar-thumb
+{
+	background-color: rgba(0,0,0,0.6);
+	border-radius:6px;
+}
+.weibo_new ul{
+	overflow-x: hidden;
+}
+.weibo_new li{
+	overflow: hidden;
+	margin-top: 1rem;
+}
+.weibo_new_img{
+	width: 2rem;
+    height: 2rem;
+    float: left;
+    overflow: hidden;
+}
+.weibo_new_img img{
+	width: 100%;
+}
+.weibo_new_text{
+	float: left;
+	margin-left: 0.4rem;
+}
+.weibo_new_text p{
+	font-size: 0.8rem;
+}
+.weibo_new_time{
+	float: right;
+	margin-top: 0.6rem;
+}
+.weibo_new_time span{
+	font-size: 0.6rem;
+}
+/*最新内容*/
+
+
+/*更改后的样式*/
+.text_red{
+	color:red;
+}

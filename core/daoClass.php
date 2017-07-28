@@ -114,6 +114,7 @@
 		 * @return [type] [description]
 		 */
 		function getInfoByclo($table,$getData,$val=0){
+			$querySql="select * from $table";
 			$val_str = "";
 			$douhao = "";
 			foreach ($getData as $key => $value) {
@@ -121,21 +122,7 @@
 				$douhao=" and ";
 
 			}
-			// $col_str = implode(",", array_keys($getData));
-			// $val_data = array_values($getData);
-			// $val_str = "";
-			// $douhao = "";
-
-			// foreach ($val_data as $key => $value) {
-			// 	 // 怎么判断变量的类型
-			// 	 if(is_string($value)){
-			// 	 	$val_str.=$douhao."'".$value."'";
-			// 	 }else{
-			// 	 	$val_str.=$douhao.$value;
-			// 	 }
-			// 	 $douhao =",";
-			// }
-			echo $querySql = "select * from $table where  $val_str";
+			$querySql.= " where ".$val_str;
 			if(1==$val){
 				$querySql.="ORDER BY content_id DESC LIMIT 3";
 			}
