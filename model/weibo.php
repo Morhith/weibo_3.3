@@ -29,6 +29,11 @@ class  weibo  extends daoClass {
 
 
 	}
+	public function collectionNumByContentId($content_id){
+			$query = "select count(*) num from weibo_collection where content_id='$content_id'";
+			$res = $this -> select($query);
+			return $res;
+		}
 
 }
 

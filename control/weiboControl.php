@@ -6,22 +6,18 @@ class  weiboControl extends baseControl{
 
 	public function index()
 	{
-		$weibo_list = $this->model("weibo")->getInfoAll("weibo_content");
+		$weibo_list = $this->model("weibo")->getInfoAll("weibo_content",1,"content_id");
 
 		// var_dump($weibo_list);
 		
-		session_start();
-		$user_name = '';
-		if ($_SESSION['user_id']>0){
-			$user_name = $_SESSION['user_name'];
-			$this->assign("user_name",$user_name);
-			$this->assign("user_pic",$_SESSION['user_pic']);
-		}
+		$this->hasLogin();
+		$weibo_list = $this->joinUserpic($weibo_list);
 
 		$this->assign('weibo_list',$weibo_list);
 
-		$this->display("main.html");
+		$this->display("mainTestRight.html");
 	}
+	
 	//长微博
 	public function send_long()
 	{ 
@@ -36,19 +32,54 @@ class  weiboControl extends baseControl{
 	 * @return [type] [description]
 	 */
 	public function send_content(){
-		//判断是否存在
-		if(isset($_FILES['save_file']['tmp_name'])){
-			$file_name = '';
-			if(1==$_POST['type']){
-				$file_name = 'images';
-			}else if(2==$_POST['type']){
-				$file_name = 'music';
-			}else if(3==$_POST['type']){
-				$file_name = 'video';
+		
+		if(0==$_POST['type']){
+				$_POST['type'] = '短微博';
+		}else{
+			//判断是否存在文件
+			if(isset($_FILES['save_file']['tmp_name'])){
+				$file_name = '';
+				if(1==$_POST['type']){
+					$file_name = 'weibofile/images';
+					$_POST['pic'] = uploadUserFile($file_name);
+					$_POST['type'] = '图片';
+				}else if(2==$_POST['type']){
+					$file_name = 'weibofile/music';
+					$_POST['music'] = uploadUserFile($file_name);
+					$_POST['type'] = '音乐';
+				}else if(3==$_POST['type']){
+					$file_name = 'weibofile/video';
+					$_POST['video'] = uploadUserFile($file_name);
+					$_POST['type'] = '视频';
+				}
 			}
-			$save_file=uploadUserFile($file_name);
 		}
-		return $this->model("weibo")->addInfo("weibo_content",$_POST);
+		$_POST['create_content_time'] = time();
+		$content_id =  $this->model("weibo")->addInfo("weibo_content",$_POST);
+		if($content_id>0){
+			$_POST['content_id'] = $content_id;
+			$this->reJson('1',$_POST);
+		}else{
+			$this->reJson('0');
+		}
+	}
+	/**
+	 * [search_weibo description]
+	 * @return [type] [description]
+	 */
+	public function search_weibo(){
+		$res = $this->model("weibo")->getInfoByclo("weibo_content",$_POST);
+		$this->hasLogin();
+		if(!empty($res)){
+			$res = $this->joinUserpic($res);
+			$this->assign("weibo_list",$res);
+			$html = $this->fetch("weibo_list.html",$res);
+			$res['html'] = $html; 
+		    $this->reJson('1',$res);
+		}
+		else{
+			$this->reJson('0');
+		}
 	}
 	//获取最近几条信息
 	/**
@@ -57,7 +88,7 @@ class  weiboControl extends baseControl{
 	 */
 	public function getLastInfo()
 	{
-		$res = $this->model("weibo")->getInfoByclo("weibo_content",array('user_id'=>'1'),1);
+		$res = $this->model("weibo")->getInfoByclo("weibo_content",$_POST,1);
 		if(!empty($res)){
 		   $this->reJson('1',$res);
 		}
@@ -66,8 +97,12 @@ class  weiboControl extends baseControl{
 		}
 	}
 	//收藏
-	public function collection(){
-
+	public function collectionAdd(){
+		
+	}
+	//取消收藏
+	public function collectionclose(){
+		
 	}
 	//转发
 	public function transmite(){
@@ -75,7 +110,20 @@ class  weiboControl extends baseControl{
 	}
 	//点赞
 	public function praise(){
-
+		$content_id =  $this->model("praise")->addInfo("weibo_praise",$_POST);
+		if($content_id>0){
+			$this->reJson('1',$content_id);
+		}else{
+			$this->reJson('0');
+		}
+	}
+	//取消点赞
+	public function praiseclose(){
+		if($this->model("praise")->deleteOneInfo("weibo_praise",$_POST)){
+			$this->reJson('1');
+		}else{
+			$this->reJson('0');
+		}
 	}
 }
 

@@ -14,14 +14,19 @@ class  userControl extends baseControl{
 	public function issetUser(){
 		$res =  $this->model("user")->getInfoByclo("weibo_user",$_POST);
 		if(!empty($res)){
-			unset($res['user_password']);
+			unset($res[0]['user_password']);
 
 			$this->login($res);
 
-			$this->reJson('1',$res);
+			// $this->assign("item",$new_content);
+
+			// // html编码统一返回null
+			$html = $this->fetch("mainTest.html",$res);
+			$res[0]['html'] = $html; 
+			$this->reJson('1',$res[0]);
 		}
 		else{
-			$this->reJson('0',$res);
+			$this->reJson('0');
 		}
 	}
 	//登录

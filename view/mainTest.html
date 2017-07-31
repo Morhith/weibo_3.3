@@ -1,0 +1,83 @@
+			<!-- 右边盒子 -->
+			<div>
+				<!-- 上面显示已经发布的微博内容 -->
+				<div class="weibo_right_showAllBody">
+					<div class="weibo_left_title weibo_showAll_title">
+						<h4>请选择你想查看的微博类型</h4>
+					</div>
+					<div class="container">
+						<ul>
+						<li><a href="">文字</a></li>
+						<li><a href="">长微博</a></li>
+						<li><a href="">图片</a></li>
+					</ul>
+					<ul>
+						<li><a href="">音乐</a></li>
+						<li><a href="">视频</a></li>
+						<li><a href="">全部</a></li>
+					</ul>
+					</div>
+				</div>
+				<!-- 下面发布和显示最新内容 -->
+				<div class="weibo_right_release">
+					<div class="weibo_release">
+						<!-- 标题 -->
+						<div class="weibo_release_bgColor">
+							<div class="weibo_release_title">
+								<h5>发布微博</h5>
+							</div>
+							<!-- 发布界面 -->
+							<div class="col-lg-8 weibo_release_main">
+								<form action="post_do.php" method="post">
+									<div class="tab-content">
+										<!-- 第一个面板是放文字 -->
+										<div class="tab-pane fade in active" id="tab1">
+											<textarea name="weibo_content" id="short_content" class="form-control weibo_textarea" ></textarea>
+										</div>
+										<!-- 第二个面板是放图文发布框 -->
+										<div class="tab-pane fade" id="tab2">
+											<textarea name="weibo_content" id="pic_text" class="form-control weibo_textarea" ></textarea>
+											<input type="file" id="pic_file" class="select_file">
+										</div>
+										<!-- 第三个面板是放音乐 -->
+										<div class="tab-pane fade" id="tab3">
+											<textarea name="weibo_content" id="music" class="form-control weibo_textarea" ></textarea>
+											<input type="file" id="music_file" class="select_file">
+										</div>
+										<!-- 第四个面板是放视频 -->
+										<div class="tab-pane fade" id="tab4">
+											<textarea name="weibo_content" id="video" class="form-control weibo_textarea" ></textarea>
+											<input type="file" id="video_file" class="select_file">
+										</div>
+										<!-- 第五个面板是放长微博 -->
+										<div class="tab-pane fade" id="tab5">
+											<textarea name="weibo_content" id="longText" class="form-control weibo_textarea" ></textarea>
+										</div>
+									</div>
+									<input type="button" class="btn pull-right btn-info weibo_main_btn" value="发布">
+								</form>
+							</div>
+							<!-- 选择发布类型 -->
+							<div class="col-lg-4 weibo_release_type">
+								<ul>
+									<li>
+										<a href="#tab1" data-toggle="tab">文字</a>
+									</li>
+									<li>
+										<a href="#tab2" data-toggle="tab">图文</a>
+									</li>
+									<li>
+										<a href="#tab3" data-toggle="tab">音乐</a>
+									</li>
+									<li>
+										<a href="#tab4" data-toggle="tab">视频</a>
+									</li>
+									<li>
+										<a href="#tab5" data-toggle="tab">长微博</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>

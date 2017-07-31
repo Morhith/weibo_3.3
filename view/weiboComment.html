@@ -1,0 +1,15 @@
+{foreach $comment_list as $item}
+<li>
+	<div class="weibo_comment_header">
+		<img src="{$item.user_pic}" alt="">
+	</div>
+	<div class="weibo_comment_text">
+		<p>{$item.comment}</p>
+		<p class="float-right">
+			{if 1==$item.del_content}
+				<span class="del_comment_btn">删除</span>
+			{/if}
+		</p>
+	</div>
+</li>
+{/foreach}

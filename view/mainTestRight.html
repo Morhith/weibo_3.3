@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="public/libarary/bootstrap-3.3.7/dist/css/bootstrap.min.css">	
+	<!-- <link rel="stylesheet" href="public/css/mainTest.css?0.0.0.5"> -->
+	<link rel="stylesheet" href="public/css/main.css?0.0.0.6">
+	<style>
+		/*显示内容盒子*/
+		.weibo_right_showAll{
+			width: 100%;
+			height: 31.8rem;
+			overflow-x: hidden;
+			overflow-y: scroll;
+			margin-top: 1rem;
+		}
+		.weibo_show_content{
+			padding: 0.5rem;
+		}
+		.weibo_content_img{
+			width: 8rem;
+			height: 8rem;
+			vertical-align: middle;
+		    display: table-cell;
+		}
+		.user_head{
+			margin-left: 1rem;
+			margin-right: 0.7rem;
+		}
+		/*显示内容盒子 end*/
+		/*三角形*/
+		.triangle{
+			width: 0;
+		    height: 0;
+		    position: absolute;
+		    top: 11px;
+    		left: -19px;
+		    border-top: 20px solid transparent;
+		    border-right: 20px solid white;
+		    border-bottom: 20px solid transparent;
+		}
+		.weibo_show_li{
+			position: relative;
+			/*margin-left: 0.5rem;*/
+		}
+		/*三角形 end*/
+	</style>
+</head>
+<body>
+	<!-- 导航条 -->
+	<div class="po-fixed nav_top">
+		<div class="row">
+			<div class="col-md-7 user_nav" style="margin-top: 1rem;">
+				<div class="login float-left">
+					{if $user_name}
+					{$user_name}
+					{else}
+						<a href="#login_modal" id="login_btn" data-toggle="modal">登录</a>
+					{/if}
+				</div>
+				<div class="head_photo float-left">
+					<!-- {if $user_pic}
+						<img src='{$user_pic}'>
+					{else}
+						<img src='staticImages/00000.jpg'></div>
+					{/if }-->
+				</div>
+				<div class="reg float-left">
+					{if $user_name}
+						欢迎回来
+					{else}
+					<a href="#register" id="register_btn" data-toggle="modal">注册</a>
+					{/if}
+				</div>
+			</div>
+			<div class="col-md-5">
+				<div id="nav_top_text">
+					<div class="float-left nav_text" title="文字微博">文字</div>
+					<div class="float-left nav_text" title="图文微博">图片</div>
+					<div class="float-left nav_text" title="音乐板块">音乐</div>
+					<div class="float-left nav_text" title="视频板块">视频</div>
+					<div class="float-left nav_text" title="长微博">长微博</div>
+				</div>
+				{if $user_name}
+					<div class="float-right closeOut" ><i class="glyphicon glyphicon-off" style="color:#000;"></i></div>
+				{else}
+					<div class="float-left closeOut display_none" >
+						<i class="glyphicon glyphicon-off" style="color:#000;"></i>
+					</div>
+				{/if}
+			</div>
+		</div>
+	</div>
+	<!-- 背景视频 -->
+	<!-- <div class="video">
+		<video src="http://dota2.dl.wanmei.com/dota2/media/keyart_hq_842.mp4" height="100%" preload="auto" autoplay="autoplay" loop="loop" class="video_bg"></video>
+	</div> -->
+	<div class="container container_body">
+		<div class="row">
+			<!-- 左边盒子 -->
+			<div class="col-lg-4">
+				<!-- 我的微博 -->
+				<div class="weibo_dangan">
+					<!-- 标题 -->
+					<div class="weibo_left_title">
+						<h5>我的微博</h5>
+					</div>
+					<!-- 显示内容 -->
+					<div>
+						<div class="container width weibo_left_body">
+							<!-- 头像信息 -->
+							<div class="weibo_body_info">
+								<div class="head_photo">
+									{if $user_pic}
+										<img src='{$user_pic}'>
+									{else}
+										<img src='staticImages/00000.jpg'>
+									{/if }
+								</div>
+								<div class="weibo_body_name">
+									{if $user_name}
+										<h3 id="h3_name">{$user_name}</h3>
+									{else}
+										<h3 id="h3_name">游客，你好</h3>
+									{/if}
+									<a href="index.php?control=weibo&action=index"><span class="back_btn">发布微博</span></a>
+								</div>
+								<div class="weibo_grade">
+									<img src="staticImages/00000.jpg" alt="">
+								</div>
+							</div>
+							<!-- 选择显示的三张图片 -->
+							{if $user_name}
+								<div class="weibo_body_show">
+								<div class="weibo_show1">
+									<img src="staticImages/add_bg_a.png" alt="">
+								</div>
+								<!-- <div class="weibo_show2">
+									<img src="staticImages/show2.jpg" alt="">
+								</div>
+								<div class="weibo_show3">
+									<img src="staticImages/show3.jpg" alt="">
+								</div> -->
+								</div>
+							{else}
+								<div class="weibo_body_show display_none">
+								<div class="weibo_show1">
+									<img src="staticImages/add_bg_a.png" alt="">
+								</div>
+								<!-- <div class="weibo_show2">
+									<img src="staticImages/show2.jpg" alt="">
+								</div>
+								<div class="weibo_show3">
+									<img src="staticImages/show3.jpg" alt="">
+								</div> -->
+								</div>
+							{/if }
+							<!-- 点赞最多的微博 -->
+							<div class="weibo_show_morezan">
+								<ul class="weibo_show_ul">
+									
+									<li class="weibo_show_li">
+										<div class="weibo_show_zan">
+											<h3>{$weibo_list[0].title}</h3>
+											<div class="weibo_zan_img">
+												{if $weibo_list[0].pic}
+												    <img src="{$weibo_list[0].pic}" class="show_img" /><br/>
+												{elseif $weibo_list[0].music}
+												    歌名：{$weibo_list[0].music_name}<br>
+												    <audio src="{$weibo_list[0].music}" controls></audio><br/>
+												{elseif $weibo_list[0].video}
+												    <video src="{$weibo_list[0].video}" controls></video><br/>
+												{/if}
+												{$weibo_list[0].content}
+											</div>
+											<div class="weibo_zan_button">
+												
+												<ul>
+													<li><span class="glyphicon glyphicon-heart-empty"></span></li>
+													<li><span class="glyphicon glyphicon-thumbs-up">()</span></li>
+													<li><span>评论({$weibo_list[0].comment_num})</span></li>
+													<li><span>删除</span></li>
+												</ul>
+											</div>
+										</div>
+										
+										<div class="weibo_shwo_comment display_none">
+											<ul>
+												<li>
+													<div class="weibo_new_img">
+														<img src="staticImages/header_photo.jpg" alt="">
+													</div>
+													<div class="weibo_new_text">
+														<p>我是评论1</p>
+													</div>
+													<div class="weibo_new_time">
+														<span>2017/7/27</span>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<!-- 关注好友 -->
+						<!-- <div>
+							<div class="weibo_left_title">
+								<h5>我的好友</h5>
+							</div>
+						</div> -->
+					</div>
+				</div>
+				<!-- 以后添加的好友关注列表 -->
+				<!-- <div></div> -->
+			</div>
+			<!-- 右边盒子 -->
+			<div class="col-lg-8" id="content_list">
+				{if $user_name}
+					{include file="mainTest.html"}
+				{else}
+					{include file="weibo_list.html"}
+				{/if}
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- 登录 -->
+		<div class="modal fade" id="login_modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">用户登录</div>
+					<div class="modal-body">
+						<form>
+						  <div class="form-group">
+						    <label for="exampleInputEmail1">账号：</label>
+						    <input type="text" class="form-control" id="userName" placeholder="用户名">
+						  </div>
+						  <div class="form-group">
+						    <label for="exampleInputPassword1">密码：</label>
+						    <input type="password" class="form-control" id="userPassword" placeholder="设置密码">
+						  </div>
+						  </form>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-default" data-dismiss="modal">取消</button>
+						<button class="btn btn-info login_btn" id="weibo_login_btn">登录</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script src="public/js/jquery-1.11.1.min.js"></script>
+	<script src="public/libarary/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="public/js/weibo.js"></script>
+</body>
+</html>

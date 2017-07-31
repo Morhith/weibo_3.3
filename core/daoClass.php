@@ -87,6 +87,51 @@
 			}
 		}
 		/**
+		 * [getError 返回错误信息]
+		 * @param  [type] $num [description]
+		 * @return [type]      [description]
+		 */
+		public function getError($num)
+		{
+			 if( $this->link->errorCode() != "00000"){
+			 	if ($this->debug == true) {
+			 		var_dump($this->link->errorInfo());
+			 	}else{
+			 		return $this->link->errorInfo();
+			 	}
+			 }else{
+			 		return $num;
+			 }
+		}
+		/**
+		 * [execute description]
+		 * @param  [type] $sql [description]
+		 * @return [type]      [description]
+		 */
+		public function execute($sql)
+		{
+			$this->pstate = $this->link->prepare($sql);
+
+			$num = $this->pstate->execute(); 
+
+			return $this->getError($num);
+			
+		}
+		/**
+		 * 获取多条记录
+		 * @param  string $sql sql语句
+		 * @return array      多条记录
+		 */
+		public function select($sql,$val=0)
+		{
+			$this->execute($sql);
+			if(0==$val){
+				return $this->pstate->fetchAll();
+			}else if(1==$val){
+				return $this->pstate->fetch();
+			}
+		}
+		/**
 		 * 数据更新
 		 * [updataInfo description]
 		 * @return [type] [description]
@@ -113,7 +158,7 @@
 		 * [getInfo description]
 		 * @return [type] [description]
 		 */
-		function getInfoByclo($table,$getData,$val=0){
+		function getInfoByclo($table,$getData,$val=0,$clo=''){
 			$querySql="select * from $table";
 			$val_str = "";
 			$douhao = "";
@@ -124,14 +169,17 @@
 			}
 			$querySql.= " where ".$val_str;
 			if(1==$val){
-				$querySql.="ORDER BY content_id DESC LIMIT 3";
+				$querySql.=" ORDER BY $clo DESC LIMIT 3";
 			}
 			$res = $this->link->query($querySql);
 			return $res->fetchAll(PDO::FETCH_ASSOC);
 			// return $querySql;
 		}
-		function getInfoAll($table){
+		function getInfoAll($table,$val=0,$clo=''){
 			$querySql = "select * from $table";
+			if(1==$val){
+				$querySql.=" ORDER BY $clo DESC";
+			}
 			$res = $this->link->query($querySql);
 			return $res->fetchAll(PDO::FETCH_ASSOC);
 		}
