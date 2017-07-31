@@ -64,21 +64,15 @@
 		 * @return [type] [description]
 		 */
 		function deleteOneInfo($table,$deleteData=array()){
-			$col_str = implode(",", array_keys($deleteData));
-			$val_data = array_values($deleteData);
-				$val_str = "";
-				$douhao = "";
+			$val_str = "";
+			$douhao = "";
+			foreach ($deleteData as $key => $value) {
+				$val_str.=$douhao.$key."='".$value."' ";
+				$douhao=" and ";
 
-				foreach ($val_data as $key => $value) {
-					 // 怎么判断变量的类型
-					 if(is_string($value)){
-					 	$val_str.=$douhao."'".$value."'";
-					 }else{
-					 	$val_str.=$douhao.$value;
-					 }
-					 $douhao =",";
-				}
-			$deleteSql = "DELETE FROM $table WHERE $col_str = $val_str";
+			}
+			$deleteSql = "DELETE FROM $table WHERE $val_str";
+			// print_r($deleteSql);
 			if($this->link->exec($deleteSql)){
 				return true;
 			}
@@ -146,7 +140,7 @@
 			}
 			$updataSql.= "WHERE $table.$clo = $val";
 			if($this->link->exec($updataSql)){
-			return true;
+				return true;
 			}
 			else{
 				return false;
@@ -171,6 +165,7 @@
 			if(1==$val){
 				$querySql.=" ORDER BY $clo DESC LIMIT 3";
 			}
+			// print_r($querySql);
 			$res = $this->link->query($querySql);
 			return $res->fetchAll(PDO::FETCH_ASSOC);
 			// return $querySql;

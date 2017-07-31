@@ -22,6 +22,9 @@ img{
 ul{
 	padding: 0;
 }
+p{
+	font-size: 18px;
+}
 /*工具箱*/
 .po-fixed {
 	position: fixed;
@@ -30,9 +33,6 @@ ul{
 
 .float-left {
 	float: left;
-}
-.float-right {
-	float: right;
 }
 .width{
 	width: 100%;
@@ -45,9 +45,8 @@ ul{
 }
 /*导航条*/
 .nav_top {
-	width: 90%;
+	width: 100%;
 	z-index: 2;
-	margin:0 auto;
 	/*background:#000;*/
 }
 .nav_top .head_photo {
@@ -63,7 +62,6 @@ ul{
 .nav_top .nav_text {
 	font-size: 1rem;
 	color: #fff;
-	cursor: pointer;
 	padding: 1.7rem 1rem;
 }
 .nav_top .login,.reg {
@@ -78,8 +76,7 @@ ul{
 	background: #8a1919; 
 	margin:1.8rem 0 0 1rem; 
 	width: 1.4rem; 
-	height: 1.4rem;
-	cursor:pointer;
+	height: 1.4rem; 
 	text-align: center; 
 	line-height: 1.6rem; 
 	font-size: 1.2rem; 
@@ -141,7 +138,7 @@ ul{
 	font-size: 12px;
 	margin-top: 0.3rem;
 	display: block;
-	color: #00aeae;
+	color: #6e8c6a;
 }
 .weibo_grade{
 	width: 4.5rem;
@@ -160,7 +157,7 @@ ul{
 
 /*选择显示的三张图片*/
 .weibo_body_show{
-	margin-top: 1.1rem;
+	margin-top: 1.5rem;
 	overflow: hidden;
 }
 .weibo_body_show>div{
@@ -168,7 +165,6 @@ ul{
 	width: 4.5rem;
 }
 .weibo_body_show>div img{
-	cursor: pointer;
 	width: 100%;
 	/*margin: auto;*/
 	height: 100%;
@@ -184,13 +180,13 @@ ul{
 
 /*点赞最多的微博*/
 .weibo_show_morezan{
-	margin-top: 1rem;
+	margin-top: 1.2rem;
 }
 .weibo_show_ul{
 	color: #000;
 }
 .weibo_show_li{
-	background: rgba(255,255,255,.9);
+	background: #fff;
 }
 .weibo_show_li .weibo_show_zan{
 	padding: 1rem 1rem 0 1rem;
@@ -198,7 +194,6 @@ ul{
 .weibo_show_li .weibo_show_zan h3{
 	margin-top: 0;
 	font-size: 1rem;
-	/*overflow: hidden;*/
 }
 .weibo_show_li .weibo_zan_img{
 	width: 9.5rem;
@@ -207,16 +202,6 @@ ul{
     display: table-cell;
     /*overflow: hidden;*/
     /*用js控制，如果图片长度超过14.4rem,display:none,overflow:hidden;*/
-}
-.weibo_show_li .weibo_show_content >p{
-	font-size: 14px;
-}
-.weibo_show_li .weibo_show_content >p>span{
-	color:#00aeae;
-}
-
-.back_btn{
-	cursor: pointer;
 }
 .weibo_show_li .weibo_zan_img img{
 	width: 100%;
@@ -233,13 +218,8 @@ ul{
 	float: left;
 	/*margin-left: 0.9rem;*/
 	width: 25%;
-	font-size: .9rem;
-	color:#00aeae;
 	text-align: center;
 	padding: 0.2rem;
-}
-.weibo_show_li .weibo_zan_button li span{
-	cursor: pointer;
 }
 .weibo_shwo_comment{
 	padding:0 1rem 1rem 1rem;
@@ -266,18 +246,18 @@ ul{
 	font-size: 0.8rem;
 }
 .weibo_shwo_commentRelease{
-	padding: 0 1rem 0 1rem;
-	margin-bottom: 0.5rem;
+	margin: 0 2rem .5rem 2rem;
+    overflow: hidden;
 }
 .weibo_shwo_commentRelease .commont_texarea{
-	width: 90% !important;
+	/*width: 90% !important;*/
 	resize: none;
 	display: block;
 	margin: 0 auto;
 }
 .weibo_shwo_commentRelease .send_commont{
 	margin-top: 0.5rem;
-	margin-left: 22.2rem;
+	float: right;
 }
 
 /*点赞最多的微博 end*/

@@ -7,6 +7,7 @@ $(document).ready(function(){
 });
 
 
+var user_val=false;
 $(function  (){
 
 	//屏幕自适应
@@ -32,67 +33,136 @@ $(function  (){
 	//登录
 	$("#weibo_login_btn").click(function(event) {
 		/* Act on the event */
+
 		$user_name = $('#userName');
 		$user_pwd = $('#userPassword');
-		$.ajax({
-			url:"index.php?control=user&action=issetUser",
-			type:"post",	
-	        data:{'user_name':$user_name.val(),'user_password':$user_pwd.val()},
-			success: function(data){
-				if(!$.isEmptyObject(data)){	
-					var redata = $.parseJSON(data);
-					if(1==redata.status){
-						localStorage.setItem("user_id",redata.rearray.user_id);
-						localStorage.setItem("user_name",redata.rearray.user_name);
-						localStorage.setItem("user_pic",redata.rearray.user_pic);
-						$('.login').html(redata.rearray.user_name);
-						$('#content_list').html(redata.rearray.html);
-						$('.closeOut').stop().show(500);
-						$('nav_top_text').stop().hide(500);
-						$('#h3_name').html(redata.rearray.user_name);
-						$('.weibo_body_show').stop().show(500);
-						$('.head_photo>img').attr('src',redata.rearray.user_pic);
-						$('#login_modal').modal('hide');
-						$('.reg').html('欢迎你回来');
-					}
-					else{
-						console.log('登录失败')
+		if($user_name.val() == "") {
+			$(".user_name").html("请输入手机号码");
+            return false;
+		}
+		else if (!(/^1[34578]\d{9}$/.test($user_name.val()))) {
+			$(".user_name").html("手机号码有误，请重填");
+            return false; 
+		}else{
+			$.ajax({
+				url:"index.php?control=user&action=issetUser",
+				type:"post",	
+		        data:{'user_phone':$user_name.val(),'user_password':$user_pwd.val()},
+				success: function(data){
+					if(!$.isEmptyObject(data)){	
+						var redata = $.parseJSON(data);
+						if(1==redata.status){
+							localStorage.setItem("user_id",redata.rearray.user_id);
+							localStorage.setItem("user_name",redata.rearray.user_name);
+							localStorage.setItem("user_pic",redata.rearray.user_pic);
+							$('.login').html(redata.rearray.user_name);
+							$('#content_list').html(redata.rearray.html);
+							$('.closeOut').stop().show(500);
+							$('nav_top_text').stop().hide(500);
+							$('#h3_name').html(redata.rearray.user_name);
+							$('.weibo_body_show').stop().show(500);
+							$('.head_photo>img').attr('src',redata.rearray.user_pic);
+							$('#login_modal').modal('hide');
+							$('.reg').html('欢迎你回来');
+						}else if(2==redata.status){
+									alert('检测到你已经登录');
+								}
+						else{
+							$(".user_pwd").html("密码有误");
+						}
 					}
 				}
-			}
-		});
+			});
+		}
+		
 	});
 	//注册
-	
+	$("#weibo_register_btn").click(function() {
+		var $register = $("#register_modal");
+		var user_phone = $register.find('#user_phone_register');
+		var user_name = $register.find('#user_name_register');
+		var user_pwd = $register.find('#userPassword_register');
+		var user_repwd = $register.find('#userRePassword_register');
+
+		if(user_phone.val() == "") {
+			$(".user_phone").html("请输入手机号码");
+            return false;
+		}
+		else if (!(/^1[34578]\d{9}$/.test(user_phone.val()))) {
+			$(".user_phone").html("手机号码有误，请重填");
+            return false; 
+		}
+		else if (user_pwd.val() == "") {
+			$(".userPassword").html("密码不能为空");
+            return false;
+		}
+		else if (!(/^(\w){6,20}$/.test(user_pwd.val()))) {
+			$(".userPassword").html("请输入6-20位密码，包含字母、数字、下划线");
+            return false;
+		}
+		else if (user_repwd.val() == "") {
+			$(".userRePassword").html("请再次输入密码");
+			return false;
+		}
+		else if (user_repwd.val() != user_pwd.val() ) {
+			$(".userRePassword").html("与密码不一致");
+			return false;
+		}else{
+			issetUser(user_phone.val(),refun=function(){
+				$(".user_name").html("");
+				$(".userPassword").html("");
+				$(".userRePassword").html("");
+				$(".user_phone").html("");
+
+				$("#register_modal").modal("hide");
+
+				$.ajax({
+					url:"index.php?control=user&action=register",
+					type:"post",//为false则传给后台的不是对象	
+		        	data:{'user_phone':user_phone.val(),'user_password':user_pwd.val(),'user_name':user_name.val()},
+					success: function(data){
+						if(!$.isEmptyObject(data)){	
+							var redata = $.parseJSON(data);
+							if(1==redata.status){
+								$('#login_modal').modal('show');
+							}
+							else {
+								alert('注册时出错');
+							}
+						}
+
+					}
+				});	
+			});
+		}
+	});
+
 	// 匹配用户名
-	function issetUser(userName){
-		var val = false;
+	function issetUser($user_phone,refun){
 		$.ajax({
-			url:'index.php?',
+			url:'index.php?control=user&action=issetUserName',
 			type:'post',
 			data:{
-			 	'user_name':$uaerName,
+			 	'user_phone':$user_phone,
 		 	},
-			async : false,
 			success: function(data){
-				if($.isEmptyObject(data)){
+				if(!$.isEmptyObject(data)){
 					var rtdata = $.parseJSON(data);
 					if(1==rtdata.status){
-						val = true;
+						refun();
 					}
 					else if(0==rtdata.status){
-						val = false;
+						$(".user_name").html("用户名已存在");
 					}
 					else{
-						val = false;
+						$(".user_name").html("用户名已存在");
 					}
 				}
 				else{
-					val = false;
+					$(".user_name").html("用户名已存在");
 				}
 			}
 		});
-		return val;
 	}
 	// 退出事件
 	$('.closeOut').click(function(event) {
@@ -100,20 +170,21 @@ $(function  (){
 		logout();
 	});
 	function logout(){
-		localStorage.removeItem("user_id");
-	 	localStorage.removeItem("user_name");
-	 	localStorage.removeItem("user_pic");
-	 	$.post('index.php?control=user&action=logout',{},function(data){
+		var user_id = localStorage.getItem("user_id");
+	 	$.post('index.php?control=user&action=logout',{'user_id':user_id},function(data){
 	 		if(!$.isEmptyObject(data)){
 	 			var redata = $.parseJSON(data);
 					if(1==redata.status){
+						localStorage.removeItem("user_id");
+	 					localStorage.removeItem("user_name");
+	 					localStorage.removeItem("user_pic");
 						$('#h3_name').html('游客，你好');
 						$('.closeOut').stop().hide(500);
 						$('.weibo_body_show').hide(500);
 						$('#nav_top_text').stop().show(500);
 						$('.head_photo>img').attr('src',"staticImages/00000.jpg");
 						$('.login').html('<a href="#login_modal" id="login_btn" data-toggle="modal">登录</a>');
-	 					$('.reg').html('<a href="#register" id="register_btn" data-toggle="modal">注册</a>');
+	 					$('.reg').html('<a href="#register_modal" id="register_btn" data-toggle="modal">注册</a>');
 					}else{
 						console.log('退出失败')
 					}
@@ -166,9 +237,8 @@ $(function  (){
 							 		alert("发布成功");
 							 	}else if(0==redata.status){
 							 		alert("发布失败");
-							 	}
-							 	else{
-							 		alert("发生未知错误");
+							 	}else if(2==redata.status){
+							 		alert("你还不是会员");
 							 	}
 						 }
 						}
@@ -334,24 +404,39 @@ $(function  (){
 					$login_box.modal('show');
 				}
 			}else if(this_elm.hasClass("praise_btn")){
-				var content_id=this_elm.parent().parent().attr('data-id');
-				var obj = {
+				if(haslogin()){
+					var content_id=this_elm.parent().parent().attr('data-id');
+					var obj = {
 						'user_id':user_id,
 						'content_id':content_id,
 					}
-				$.ajax({
+					$.ajax({
 					url: 'index.php?control=weibo&action=praise',
 					type: 'post',
 					data: obj
 				})
 				.done(function(data) {
 					var val = Number(this_elm.find('.praise_num').text());
-					val++;
+					if(!$.isEmptyObject(data)){	
+						var redata = $.parseJSON(data);
+						if(1==redata.status){
+							val++;
+						}else if(2==redata.status){
+							val--;
+						 }
+						 else{
+						 	alert("操作失败");
+						 }
+						}
 					this_elm.find('.praise_num').html(val);
 				});
+			}else{
+				$login_box.modal('show');
+			}
+				
 				
 			}else if(this_elm.hasClass('del_content')){
-				
+
 			}
 		});
 	}

@@ -5,8 +5,15 @@
 	<title></title>
 	<link rel="stylesheet" href="public/libarary/bootstrap-3.3.7/dist/css/bootstrap.min.css">	
 	<!-- <link rel="stylesheet" href="public/css/mainTest.css?0.0.0.5"> -->
-	<link rel="stylesheet" href="public/css/main.css?0.0.0.6">
+	<link rel="stylesheet" href="public/css/main.css?0.0.0.8">
 	<style>
+		.color000 {
+			color: #000;
+		}
+		.colorRed {
+			color: red;
+			font-size: 0.6rem;
+		}
 		/*显示内容盒子*/
 		.weibo_right_showAll{
 			width: 100%;
@@ -19,7 +26,7 @@
 			padding: 0.5rem;
 		}
 		.weibo_content_img{
-			width: 8rem;
+			width: 30rem;
 			height: 8rem;
 			vertical-align: middle;
 		    display: table-cell;
@@ -28,7 +35,27 @@
 			margin-left: 1rem;
 			margin-right: 0.7rem;
 		}
+		.weibo_content_longText{
+			display: block;
+			width: 100%;
+			overflow: hidden;
+		}
+		.weibo_content_longText p{
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+		.weibo_show_time{
+			margin-top: 0.5rem;
+		}
+		.weibo_show_time p{
+			font-size: 12px;
+		}
+		.weibo_show_li .weibo_zan_button{
+			margin-top: 0.5rem;
+		}
 		/*显示内容盒子 end*/
+		
 		/*三角形*/
 		.triangle{
 			width: 0;
@@ -42,7 +69,8 @@
 		}
 		.weibo_show_li{
 			position: relative;
-			/*margin-left: 0.5rem;*/
+			margin-bottom: 25px;
+    		box-shadow: 10px 10px 20px #000;
 		}
 		/*三角形 end*/
 	</style>
@@ -70,7 +98,7 @@
 					{if $user_name}
 						欢迎回来
 					{else}
-					<a href="#register" id="register_btn" data-toggle="modal">注册</a>
+					<a href="#register_modal" id="register_btn" data-toggle="modal">注册</a>
 					{/if}
 				</div>
 			</div>
@@ -83,7 +111,7 @@
 					<div class="float-left nav_text" title="长微博">长微博</div>
 				</div>
 				{if $user_name}
-					<div class="float-right closeOut" ><i class="glyphicon glyphicon-off" style="color:#000;"></i></div>
+					<div class="float-left closeOut"><i class="glyphicon glyphicon-off" style="color:#000;"></i></div>
 				{else}
 					<div class="float-left closeOut display_none" >
 						<i class="glyphicon glyphicon-off" style="color:#000;"></i>
@@ -133,10 +161,10 @@
 							<!-- 选择显示的三张图片 -->
 							{if $user_name}
 								<div class="weibo_body_show">
-								<div class="weibo_show1">
-									<img src="staticImages/add_bg_a.png" alt="">
-								</div>
-								<!-- <div class="weibo_show2">
+									<div class="weibo_show1">
+										<img src="staticImages/add_bg_a.png" alt="">
+									</div>
+									<!-- <div class="weibo_show2">
 									<img src="staticImages/show2.jpg" alt="">
 								</div>
 								<div class="weibo_show3">
@@ -145,9 +173,9 @@
 								</div>
 							{else}
 								<div class="weibo_body_show display_none">
-								<div class="weibo_show1">
-									<img src="staticImages/add_bg_a.png" alt="">
-								</div>
+									<div class="weibo_show1">
+										<img src="staticImages/add_bg_a.png" alt="">
+									</div>
 								<!-- <div class="weibo_show2">
 									<img src="staticImages/show2.jpg" alt="">
 								</div>
@@ -159,7 +187,6 @@
 							<!-- 点赞最多的微博 -->
 							<div class="weibo_show_morezan">
 								<ul class="weibo_show_ul">
-									
 									<li class="weibo_show_li">
 										<div class="weibo_show_zan">
 											<h3>{$weibo_list[0].title}</h3>
@@ -232,16 +259,18 @@
 		<div class="modal fade" id="login_modal">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header">用户登录</div>
+					<div class="modal-header color000">用户登录</div>
 					<div class="modal-body">
 						<form>
 						  <div class="form-group">
-						    <label for="exampleInputEmail1">账号：</label>
+						    <label class="color000">账号：</label>
 						    <input type="text" class="form-control" id="userName" placeholder="用户名">
+						    <p class="user_name colorRed"></p>
 						  </div>
 						  <div class="form-group">
-						    <label for="exampleInputPassword1">密码：</label>
+						    <label class="color000">密码：</label>
 						    <input type="password" class="form-control" id="userPassword" placeholder="设置密码">
+						    <p class="user_pwd colorRed"></p>
 						  </div>
 						  </form>
 					</div>
@@ -252,6 +281,44 @@
 				</div>
 			</div>
 		</div>
+	<!-- 注册 -->
+	<div class="modal fade" id="register_modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- 顶部 -->
+				<div class="modal-header color000">欢迎注册</div>
+				<!-- body -->
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="color000">手机号码</label>
+						<input type="text" id="user_phone_register" class="form-control">
+						<p class="user_phone colorRed"></p>
+					</div>
+					<div class="form-group">
+						<label class="color000">昵称</label>
+						<input type="text" id="user_name_register" class="form-control">
+						<p class="user_nicheng colorRed"></p>
+					</div>
+					<div class="form-group">
+						<label class="color000">密码</label>
+						<input type="text" id="userPassword_register" class="form-control">
+						<p class="userPassword colorRed"></p>
+					</div>
+					<div class="form-group">
+						<label class="color000">重复密码</label>
+						<input type="text" id="userRePassword_register" class="form-control">
+						<p class="userRePassword colorRed"></p>
+					</div>
+				</div>
+				<!-- 底部 -->
+				<div class="modal-footer">
+					<button class="btn btn-success" id="weibo_register_btn">我要注册</button>
+					<button class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script src="public/js/jquery-1.11.1.min.js"></script>
 	<script src="public/libarary/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="public/js/weibo.js"></script>

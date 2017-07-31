@@ -12,24 +12,37 @@
 					<div class="triangle"></div>
 					<div class="weibo_show_content">
 						<h4>{$value.title}</h4>
-						<div class="weibo_content_img">
 							{if $value.pic}
-							    <img src="{$value.pic}" class="show_img" /><br/>
+								<div class="weibo_content_img">
+									<img src="{$value.pic}" alt="">
+								</div>
 							{elseif $value.music}
-							    歌名：{$value.music_name}<br>
-							    <audio src="{$value.music}" controls></audio><br/>
+							    <div class="">
+									<p>歌名：{$value.music_name}</p>
+									<audio src="{$value.music}" controls="" style="width: 100%;"></audio>
+								</div>
 							{elseif $value.video}
-							    <video src="{$value.video}" controls></video><br/>
-							{/if}
-							{$value.content}
-						</div>
-						<p class="float-right">发布于<span>{format_date($value.create_content_time)}</span></p>
+								<div class="weibo_content_img">
+									<video src="{$value.video}" height="100%" controls=""></video>
+								</div>
+							{else}
+								<div class="weibo_content_img">
+									<p>{$value.content}</p>
+								</div>
+							{/if}	
+							<div class="weibo_show_time overflow">
+								<p class="pull-right">{format_date($value.create_content_time)}</p>
+							</div>
 						<div class="weibo_zan_button">
 							<!-- 四个按钮 -->
 							<ul data-id="{$value.content_id}">
-								<li><span class="glyphicon glyphicon-heart-empty"></span></li>
-								<li><span class="glyphicon glyphicon-thumbs-up praise_btn">(<span class="praise_num">{$value.praise_num}</span>)</span></li>
-								<li><span class="comment_up" data-id="{$value.content_id}">评论({$value.comment_num})</span></li>
+								<li>收藏</li>
+								<li>
+									<span class="praise_btn">
+										点赞
+										<span class="praise_num">{$value.praise_num}</span>
+									</span></li>
+								<li><span class="comment_up" data-id="{$value.content_id}">评论</span></li>
 								{if 1==$value.del_content}
 									<li><span class="del_content_btn">删除</span></li>
 								{else}

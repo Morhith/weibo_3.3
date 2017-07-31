@@ -16,6 +16,7 @@ require_once 'core\daoClass.php';
 // 引入父类控制器
 
 require_once 'core\baseControl.php';
+require_once 'core\authControl.php';
 
 
 ?>

@@ -1,5 +1,5 @@
 <?php 
-	class commentControl extends baseControl{
+	class commentControl extends authControl{
 		/**
 		 * [send_comment 发表评论]
 		 * @return [type] [description]
