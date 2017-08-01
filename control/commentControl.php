@@ -19,6 +19,7 @@
 
 			if(!empty($comment_list)){
 				$comment_list = $this->joinUserpic($comment_list);
+				$comment_list = array_reverse($comment_list);
 				$this->assign("comment_list",$comment_list);
 				$html = $this->fetch("weiboComment.html",$comment_list); 
 			   	$this->reJson('1',$html);

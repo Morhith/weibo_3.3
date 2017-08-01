@@ -139,6 +139,7 @@
 				$douhao = ",";
 			}
 			$updataSql.= "WHERE $table.$clo = $val";
+			// print_r($updataSql);
 			if($this->link->exec($updataSql)){
 				return true;
 			}

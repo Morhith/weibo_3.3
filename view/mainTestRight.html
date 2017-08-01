@@ -5,7 +5,7 @@
 	<title></title>
 	<link rel="stylesheet" href="public/libarary/bootstrap-3.3.7/dist/css/bootstrap.min.css">	
 	<!-- <link rel="stylesheet" href="public/css/mainTest.css?0.0.0.5"> -->
-	<link rel="stylesheet" href="public/css/main.css?0.0.0.8">
+	<link rel="stylesheet" href="public/css/main.css?0.0.1.0">
 	<style>
 		.color000 {
 			color: #000;
@@ -141,7 +141,7 @@
 							<div class="weibo_body_info">
 								<div class="head_photo">
 									{if $user_pic}
-										<img src='{$user_pic}'>
+										<a href="#head_modal" data-toggle="modal"><img src='{$user_pic}'></a>
 									{else}
 										<img src='staticImages/00000.jpg'>
 									{/if }
@@ -204,9 +204,9 @@
 											<div class="weibo_zan_button">
 												
 												<ul>
-													<li><span class="glyphicon glyphicon-heart-empty"></span></li>
-													<li><span class="glyphicon glyphicon-thumbs-up">()</span></li>
-													<li><span>评论({$weibo_list[0].comment_num})</span></li>
+													<li>收藏</span></li>
+													<li>点赞{$weibo_list[0].praise_num}</span></li>
+													<li><span>评论</span></li>
 													<li><span>删除</span></li>
 												</ul>
 											</div>
@@ -242,7 +242,7 @@
 				<!-- 以后添加的好友关注列表 -->
 				<!-- <div></div> -->
 			</div>
-			<!-- 右边盒子 -->
+	<!-- 右边盒子 -->
 			<div class="col-lg-8" id="content_list">
 				{if $user_name}
 					{include file="mainTest.html"}
@@ -255,7 +255,7 @@
 
 
 
-	<!-- 登录 -->
+<!-- 登录 -->
 		<div class="modal fade" id="login_modal">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -281,7 +281,7 @@
 				</div>
 			</div>
 		</div>
-	<!-- 注册 -->
+<!-- 注册 -->
 	<div class="modal fade" id="register_modal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -318,7 +318,37 @@
 			</div>
 		</div>
 	</div>
-
+<!-- 提示 -->
+	<div class="modal fade" id="tip_modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header color000">友情提示</div>
+				<div class="modal-body">
+					<p class="weibo_tip color000"></p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-info login_btn" id="weibo_tip_btn">我要会员</button>
+					<button class="btn btn-default" data-dismiss="modal">取消</button>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- 头像 -->
+	<div class="modal fade" id="head_modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header color000">上传头像</div>
+				<div class="modal-body">
+					<input type="file" class="color000" id="headPhoto">
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal">我不想改了</button>
+					<button class="btn btn-info head_btn" id="head_btn">上传</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="public/js/jquery-1.11.1.min.js"></script>
 	<script src="public/libarary/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="public/js/weibo.js"></script>

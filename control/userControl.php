@@ -100,6 +100,47 @@ class  userControl extends authControl{
 	public function delFriend(){
 
 	}
+	//修改用户信息
+	public function upUserpic(){
+		//获取上传的用户id
+		// $user_id = $_POST['user_id'];
+		//查询数据库获取用户头像的图片路径
+		$user = $this->model("user")->getInfoByclo("weibo_user",$_POST)[0];
+		//判断是否为默认的头像，是则不做删除，否则删除旧的图片
+		if('staticImages/show3.jpg'!=$user['user_pic']){
+			//获取文件
+			$file = $user['user_pic'];
+			//判断是否有该文件，有则删除，否则不做操作
+			if (is_file($file)) {
+				unlink($file);
+			}				
+		}
+		//保存文件
+		//判断是否有文件
+		if(!empty($_FILES['save_file']['tmp_name'])){
+			//反转文件名
+			$string = strrev($_FILES['save_file']['name']);
+			//获取后缀名
+	        $array = explode('.',$string);
+	        //设定新的文件名
+	        $user_pic =  'weibofile/userHp/'.time().rand(0,999).'.'.strrev($array[0]);
+	        //转存到指定的文件夹
+	        move_uploaded_file($_FILES['save_file']['tmp_name'], $user_pic);
+	        //执行数据入库操作
+	        if($this->model("user")->updataInfo("weibo_user",array("user_pic"=>$user_pic),"user_id",$_POST['user_id'])){
+	        	//成功则开启会话，保存用户的图片
+	        	session_start();
+	        	$_SESSION['user_pic'] = $user_pic;
+	        	//返回图片的路径
+	        	$this->reJson('1',$user_pic);
+	        }else{
+	        	$this->reJson('0');
+	        }
+	    }
+	    else{
+	    	$this->reJson('2');
+	    }
+	}
 }
 
 ?>

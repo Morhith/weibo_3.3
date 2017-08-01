@@ -6,6 +6,8 @@
 	<div class="weibo_comment_text">
 		<p>{$item.comment}</p>
 		<p class="float-right">
+			
+			{format_date($item.create_comment_time)}
 			{if 1==$item.del_content}
 				<span class="del_comment_btn">删除</span>
 			{/if}

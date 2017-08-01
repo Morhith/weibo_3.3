@@ -61,9 +61,11 @@ $(function  (){
 							$('nav_top_text').stop().hide(500);
 							$('#h3_name').html(redata.rearray.user_name);
 							$('.weibo_body_show').stop().show(500);
-							$('.head_photo>img').attr('src',redata.rearray.user_pic);
+							$('.head_photo>a>img').attr('src',redata.rearray.user_pic);
 							$('#login_modal').modal('hide');
 							$('.reg').html('欢迎你回来');
+							weibo_click();
+							header_img_click();
 						}else if(2==redata.status){
 									alert('检测到你已经登录');
 								}
@@ -136,7 +138,35 @@ $(function  (){
 			});
 		}
 	});
+	// 上传头像
+	function header_img_click(){
+		$("#head_btn").click(function(){
+		var fd = new FormData();
+		var user_id = localStorage.getItem("user_id");
 
+		fd.append("user_id",user_id);
+		fd.append("save_file",$("#headPhoto").get(0).files[0]);
+		console.log(fd);
+		$.ajax({
+			url:"index.php?control=user&action=upUserpic",
+			type:"post",
+			contentType:false,
+			processData:false,
+			data:fd,
+			success:function (data) {
+				if(!$.isEmptyObject(data)){
+				 	var redata = $.parseJSON(data);
+				 	if(1==redata.status){
+				 		$("#head_modal").modal("hide");
+				 		location.reload();
+				 	}else{
+				 		alert("上传失败");
+				 	}
+				 }
+			}
+			})
+		});
+	}	
 	// 匹配用户名
 	function issetUser($user_phone,refun){
 		$.ajax({
@@ -182,7 +212,7 @@ $(function  (){
 						$('.closeOut').stop().hide(500);
 						$('.weibo_body_show').hide(500);
 						$('#nav_top_text').stop().show(500);
-						$('.head_photo>img').attr('src',"staticImages/00000.jpg");
+						$('.head_photo>a>img').attr('src',"staticImages/00000.jpg");
 						$('.login').html('<a href="#login_modal" id="login_btn" data-toggle="modal">登录</a>');
 	 					$('.reg').html('<a href="#register_modal" id="register_btn" data-toggle="modal">注册</a>');
 					}else{
@@ -205,14 +235,16 @@ $(function  (){
 		});
 	});
 	//发布按钮事件
+	function weibo_click(){
 	$('.weibo_main_btn').click(function(event) {
 		/* Act on the event */
-		if(haslogin ()){
-			send_content();
-		}else{
-			$login_box.modal('show');
-		}
-	});
+			if(haslogin ()){
+				send_content();
+			}else{
+				$login_box.modal('show');
+			}
+		});
+	}
 	function send_content(){
 		var $content = $(".weibo_textarea");
 		var $file = $('.select_file');
@@ -237,9 +269,10 @@ $(function  (){
 							 		alert("发布成功");
 							 	}else if(0==redata.status){
 							 		alert("发布失败");
-							 	}else if(2==redata.status){
-							 		alert("你还不是会员");
 							 	}
+							 	else{
+					 				alert("发生未知错误");
+					 			}
 						 }
 						}
 					});
@@ -282,7 +315,10 @@ $(function  (){
 					 		alert("发布成功");
 					 	}else if(0==redata.status){
 					 		alert("发布失败");
-					 	}
+					 	}else if(2==redata.status){
+							$('#tip_modal').find(".weibo_tip").html("你还不是会员");
+							$('#tip_modal').modal("show");
+						}
 					 	else{
 					 		alert("发生未知错误");
 					 	}
@@ -310,9 +346,9 @@ $(function  (){
 					}
 					str+='</div><div class="weibo_zan_button">'+			
 					'<ul>'+
-					'<li><span class="glyphicon glyphicon-heart-empty"></span></li>'+
-					'<li><span class="glyphicon glyphicon-thumbs-up"></span>()</li>'+
-					'<li>评论(0)</li>'+
+					'<li>收藏</li>'+
+					'<li>点赞</li>'+
+					'<li>评论</li>'+
 					'<li>删除</li>'+
 					'</ul>'+
 					'</div>'+
@@ -344,6 +380,31 @@ $(function  (){
 				search('index.php?control=weibo&action=search_weibo',obj);
 			});
 		});
+	}
+	function nav_big(){
+		var $nav_text = $('.nav_big li');
+		$nav_text.each(function(index,el){
+			$nav_text.eq(index).click(function(){
+				var type = '';
+				if(0==index){
+					type = '短微博';
+				}else if(1==index){
+					type = '长微博';
+				}else if(2==index){					
+					type = '图片';
+				}else if(3==index){
+					type = '音乐';
+				}else if(4==index){
+					type = '视频';
+				}else if(5==index){
+					type='全部';
+				}
+				var obj= {
+					"type":type,
+				};
+				search('index.php?control=weibo&action=search_weibo',obj);
+			});
+		});	
 	}
 	//搜索请求
 	function search(url,val){
@@ -381,6 +442,8 @@ $(function  (){
 					var obj = {
 						'content_id':this_elm.attr('data-id'),
 					}
+					$('.weibo_shwo_comment').hide(500);
+					$('.weibo_shwo_commentRelease').hide(500);
 					find_comment(obj,$comment_news.find('ul'));
 					$comment_news.show(500);
 					$comment_send.show(500);
@@ -435,8 +498,28 @@ $(function  (){
 			}
 				
 				
-			}else if(this_elm.hasClass('del_content')){
-
+			}else if(this_elm.hasClass('del_content_btn')){
+				var content_id=this_elm.parent().parent().attr('data-id');
+					var obj = {
+						'user_id':user_id,
+						'content_id':content_id,
+					};
+				var $del =this_elm.parents(".weibo_content_list_hf");
+				$.ajax({
+					url: 'index.php?control=weibo&action=delete_content',
+					type: 'post',
+					data: obj,
+				})
+				.done(function(data) {
+					if(!$.isEmptyObject(data)){	
+						var redata = $.parseJSON(data);
+						if(1==redata.status){
+							$del.hide(500);
+						}else{
+							alert("删除失败");
+						}
+					}
+				});
 			}
 		});
 	}
@@ -450,15 +533,15 @@ $(function  (){
 		.done(function(data) {
 			if(!$.isEmptyObject(data)){	
 				var redata = $.parseJSON(data);
-				console.log(redata);
 				if(1==redata.status){
 					var str = '<li><div class="weibo_comment_header">'+
 							  '<img src="'+localStorage.getItem("user_pic")+'" alt=""></div>'+
 							  '<div class="weibo_comment_text">'+
 							  '<p>'+obj.comment+'</p>'+
-							  '<span class="del_coment_btn float_right">删除</span>'
+							  '<p class="float-right">刚刚 <span class="del_comment_btn">删除</span><p>'
 							  '</div>';
-					$elm.append($(str));
+					$elm.prepend($(str));
+					$('.commont_texarea').val("");
 					list_click();
 				}else{
 					alert('与服务器断开连接...');
@@ -499,7 +582,10 @@ $(function  (){
 	}
 	function init(){
 		nav_href();
+		nav_big();
+		weibo_click();
 		list_click();
+		header_img_click();
 	}
 	init();
 });
