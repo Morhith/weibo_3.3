@@ -61,6 +61,7 @@ class  userControl extends authControl{
 			$_SESSION['user_id'] =$res[0]['user_id'] ;
 			$_SESSION['user_name'] = $res[0]['user_name'];
 			$_SESSION['user_pic'] = $res[0]['user_pic'];
+			// print_r($_SESSION);
 			return true;
 		}else{
 			return false;
@@ -71,7 +72,7 @@ class  userControl extends authControl{
 		$reval =$this->model("user")->updataInfo("weibo_user",array("user_status"=>0),"user_id",$_POST['user_id']);
 		if($reval){
 			session_start();
-			unset($_SESSION['uid']);
+			unset($_SESSION['user_id']);
 			unset($_SESSION['user_name']);
 			unset($_SESSION['user_pic']);
 			if(session_destroy()){	

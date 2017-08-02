@@ -1,15 +1,17 @@
 
-$(document).ready(function(){
-	// $('#loading_box').modal('show');
-	// 
-	$('#loading').fadeOut(2000);
-	$('#weibo_mask').fadeOut(2000);
-});
-
+// $(document).ready(function(){
+// 	// $('#loading_box').modal('show');
+// 	// 
+// 	$('#loading').fadeOut(2000);
+// 	$('#weibo_mask').fadeOut(2000);
+// });
 
 var user_val=false;
 $(function  (){
-
+	//实例化
+	// window.UEDITOR_CONFIG.initialFrameWidth = 900;  
+ //    window.UEDITOR_CONFIG.initialFrameHeight = 600;  
+ //    UE.getEditor("baiduEditor"); 
 	//屏幕自适应
 	var screenX = document.body.clientWidth;
 	var Multiple = screenX/1700;//1600/20
@@ -355,8 +357,34 @@ $(function  (){
 					'</div>';
 								
 		return str; 
-
 	}
+	// 长微博
+	// function longText_click() {
+	// 	$("#long_btn").click(function() {
+	// 		$(".weibo_right_showAllBody").hide(500);
+	// 		$("#edui1_iframeholder").animate({
+	// 			height : "19.1rem"
+	// 		});
+	// 	})
+	// 	$("#text_tab").click(function() {
+	// 		$(".weibo_right_showAllBody").show(500);
+	// 	})
+	// 	$("#pic_tab").click(function() {
+	// 		$(".weibo_right_showAllBody").show(500);
+	// 	})
+	// 	$("#music_tab").click(function() {
+	// 		$(".weibo_right_showAllBody").show(500);
+	// 	})
+	// 	$("#video_tab").click(function() {
+	// 		$(".weibo_right_showAllBody").show(500);
+	// 	})
+	// }
+	// 下拉加载
+	// function pubuliu(){
+	// 	$(window).scroll(function(){
+	// 		console.log($('.weibo_right_showAll').height() - $(".weibo_right_showAll").scrollTop() - $(window).height());
+	// 	});
+	// }
 	//导航条事件
 	function nav_href(){
 		var $nav_text = $('#nav_top_text .nav_text');
@@ -520,6 +548,76 @@ $(function  (){
 						}
 					}
 				});
+			}else if(this_elm.hasClass('transmite_btn')){
+				var val = this_elm.parents(".weibo_show_content").find('.weibo_content_img').find('p').text();
+				$('#tranmit_modal').modal('show');
+				$('#tranmit_modal').find(".weibo_tran").html(val);
+				$('#weibo_tran_btn').click(function(){
+					$.ajax({
+					url:'index.php?control=weibo&action=send_content',
+					type:'post',
+					data:{'user_id':localStorage.getItem("user_id"),'content':val,'type':'短微博'},	
+					success: function(data){
+							var redata = $.parseJSON(data);
+							if(!$.isEmptyObject(data)){
+							 	var redata = $.parseJSON(data);
+							 	if(1==redata.status){
+							 		var obj = redata.rearray;
+							 		var str = create_li(obj);
+							 		$('.weibo_show_ul').html($(str));
+							 		$('#tranmit_modal').modal('hide');
+							 		alert("发布成功");
+							 	}else if(0==redata.status){
+							 		alert("发布失败");
+							 	}
+							 	else{
+					 				alert("发生未知错误");
+					 			}
+						 }
+						}
+					});
+				});
+			}else if (this_elm.hasClass('collection_btn')) {
+				var content_id=this_elm.parent().parent().attr('data-id');
+				var obj = {
+						'user_id':user_id,
+						'content_id':content_id,
+					};
+				$.ajax({
+					url: 'index.php?control=weibo&action=collectionAdd',
+					type: 'post',
+					data: obj,
+				})
+				.done(function(data) {
+					if(!$.isEmptyObject(data)){	
+						var redata = $.parseJSON(data);
+						if(1==redata.status){
+							this_elm.html("已收藏");
+						}else if(2==redata.status){
+							this_elm.html("收藏");
+						}else{
+							alert("收藏失败");
+						}
+					}
+				});
+			}else if(this_elm.hasClass('del_comment_btn')){
+				var comment_id =this_elm.attr('data-id');
+				var $del =this_elm.parent().parent().parent();
+				$.ajax({
+					url: 'index.php?control=comment&action=delete_comment',
+					type: 'post',
+					data: {'comment_id':comment_id},
+				})
+				.done(function(data) {
+					if(!$.isEmptyObject(data)){	
+						var redata = $.parseJSON(data);
+						if(1==redata.status){
+							$del.hide(500);
+						}else{
+							alert("删除失败");
+						}
+					}
+				});
 			}
 		});
 	}
@@ -580,12 +678,15 @@ $(function  (){
 		.done(function() {
 		});		
 	}
+
 	function init(){
+		// pubuliu();
 		nav_href();
 		nav_big();
 		weibo_click();
 		list_click();
 		header_img_click();
+		// longText_click();
 	}
 	init();
 });

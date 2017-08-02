@@ -9,7 +9,7 @@
 			
 			{format_date($item.create_comment_time)}
 			{if 1==$item.del_content}
-				<span class="del_comment_btn">删除</span>
+				<span class="del_comment_btn" data-id="{$item.comment_id}">删除</span>
 			{/if}
 		</p>
 	</div>

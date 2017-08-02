@@ -36,7 +36,11 @@
 						<div class="weibo_zan_button">
 							<!-- 四个按钮 -->
 							<ul data-id="{$value.content_id}">
-								<li>收藏</li>
+							{if 1==$value.collection}
+								<li><span class="collection_btn">已收藏</span></li>
+							{else 0==$value.collection}
+								<li><span class="collection_btn">收藏</span></li>
+							{/if}
 								<li>
 									<span class="praise_btn">
 										点赞

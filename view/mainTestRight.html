@@ -205,7 +205,7 @@
 												
 												<ul>
 													<li>收藏</span></li>
-													<li>点赞{$weibo_list[0].praise_num}</span></li>
+													<li>点赞{$user_list[0].praise_num}</span></li>
 													<li><span>评论</span></li>
 													<li><span>删除</span></li>
 												</ul>
@@ -301,12 +301,12 @@
 					</div>
 					<div class="form-group">
 						<label class="color000">密码</label>
-						<input type="text" id="userPassword_register" class="form-control">
+						<input type="password" id="userPassword_register" class="form-control">
 						<p class="userPassword colorRed"></p>
 					</div>
 					<div class="form-group">
 						<label class="color000">重复密码</label>
-						<input type="text" id="userRePassword_register" class="form-control">
+						<input type="password" id="userRePassword_register" class="form-control">
 						<p class="userRePassword colorRed"></p>
 					</div>
 				</div>
@@ -349,8 +349,29 @@
 			</div>
 		</div>
 	</div>
+	<!-- 转发 -->
+	<div class="modal fade" id="tranmit_modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header color000">转发</div>
+				<div class="modal-body">
+					<p class="weibo_tran color000"></p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-info login_btn" id="weibo_tran_btn">转发</button>
+					<button class="btn btn-default" data-dismiss="modal">取消</button>
+					
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="public/js/jquery-1.11.1.min.js"></script>
 	<script src="public/libarary/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+
+	<!-- <script src="public/libarary/ueditor/ueditor.all.min.js"></script>
+	
+	<script src="public/libarary/ueditor/ueditor.config.js"></script> -->
+
 	<script type="text/javascript" src="public/js/weibo.js"></script>
 </body>
 </html>

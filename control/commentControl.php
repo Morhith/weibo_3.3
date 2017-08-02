@@ -30,7 +30,11 @@
 
 		}
 		public function delete_comment(){
-
+			if($this->model("comment")->deleteOneInfo("weibo_comment",$_POST)){
+				$this->reJson('1');
+			}else{
+				$this->reJson('0');
+			}
 		}
 	} 
 ?>

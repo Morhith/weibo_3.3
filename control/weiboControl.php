@@ -11,6 +11,7 @@ class  weiboControl extends authControl{
 		// var_dump($weibo_list);
 		
 		$this->hasLogin();
+
 		$weibo_list = $this->joinUserpic($weibo_list);
 
 		$this->assign('weibo_list',$weibo_list);
@@ -160,14 +161,23 @@ class  weiboControl extends authControl{
 	}
 	//收藏
 	public function collectionAdd(){
-		
-	}
-	//取消收藏
-	public function collectionclose(){
-		
-	}
-	//转发
-	public function transmite(){
+		$res = $this->model("weibo")->getInfoByclo("weibo_collection",$_POST);
+		if(!empty($res)){
+			if($this->model("weibo")->deleteOneInfo("weibo_collection",$_POST)){
+				$this->reJson('2');
+			}else{
+				$this->reJson('3');
+			}
+		}else{	
+			$_POST['create_collection'] = time();
+			$collect = $this->model("weibo")->addInfo("weibo_collection",$_POST);
+			if(!empty($collect)){
+			   $this->reJson('1',$collect);
+			}
+			else{
+				$this->reJson('0');
+			}
+		}
 
 	}
 	//点赞
@@ -187,10 +197,6 @@ class  weiboControl extends authControl{
 				$this->reJson('4');
 			}
 		}
-	}
-	//取消点赞
-	public function praiseclose(){
-		
 	}
 }
 
